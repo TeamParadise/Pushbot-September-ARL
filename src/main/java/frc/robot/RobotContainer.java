@@ -5,11 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.DriveAuto;
 import frc.robot.commands.DriveArcade;
 import frc.robot.commands.Taxi;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -22,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...;
-  public final static Drivetrain m_Drivetrain = new Drivetrain();
+  public final static DriveSubsystem m_Drivetrain = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController =

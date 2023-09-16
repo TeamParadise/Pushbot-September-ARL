@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -17,7 +18,7 @@ public class DriveDistance extends PIDCommand {
 
     super(
         // The controller that the command will use
-        new PIDController(0.25, 0, 0),
+        new PIDController(Constants.PIDConstants.kPDrivetrain, Constants.PIDConstants.kIDrivetrain, Constants.PIDConstants.kDDrivetrain),
         // This should return the measurement
         RobotContainer.m_Drivetrain::getDistance,
         // This should return the setpoint (can also be a constant)
@@ -28,7 +29,7 @@ public class DriveDistance extends PIDCommand {
     addRequirements(RobotContainer.m_Drivetrain);
     // Configure additional PID options by calling `getController` here.
 
-    getController().setTolerance(0.08);
+    getController().setTolerance(Constants.PIDConstants.kDrivetrainTolerance);
   }
 
   @Override
