@@ -17,12 +17,15 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class MotorConstants {
-    public static final int kBackLeftMotorPort = 4;
-    public static final int kFrontLeftMotorPort = 3;
-    public static final int kBackRightMotorPort = 2;
-    public static final int kFrontRightMotorPort = 1;
+    public static final int kBackLeftMotorPort = 3;
+    public static final int kFrontLeftMotorPort = 4;
+    public static final int kBackRightMotorPort = 1;
+    public static final int kFrontRightMotorPort = 2;
   }
   public static class ControllerConstants {
     public static final double kDeadzone = 0.1;
+  }
+  public static class EncoderConstants {
+    public static final double tickToFeet = 1.0 / 42 * 7 * Math.PI / 12.75 * 4;
   }
 }

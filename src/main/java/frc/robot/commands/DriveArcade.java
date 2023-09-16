@@ -33,6 +33,7 @@ public class DriveArcade extends CommandBase {
     SmartDashboard.putNumber("Right Joystick X value", RobotContainer.m_driverController.getRightX());
     SmartDashboard.putNumber("ySpeed", ySpeed);
     SmartDashboard.putNumber("xSpeed", xSpeed);
+    SmartDashboard.putNumber("encoder", RobotContainer.m_Drivetrain.getDistance());
   }
 
   // Called once the command ends or is interrupted.

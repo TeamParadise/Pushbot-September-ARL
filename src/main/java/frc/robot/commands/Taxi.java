@@ -17,8 +17,8 @@ public class Taxi extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      RobotContainer.m_Drivetrain.setBrakeMode(),
-      new DriveTank(0.1, 0.1).withTimeout(2),
+      // RobotContainer.m_Drivetrain.setBrakeMode(),
+      new DriveDistance(3),
       new WaitCommand(2),
       RobotContainer.m_Drivetrain.setCoastMode()  
     );
