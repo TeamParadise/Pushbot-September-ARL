@@ -24,9 +24,14 @@ public class Drivetrain extends SubsystemBase {
   public CANSparkMax backRightMotor = new CANSparkMax(Constants.MotorConstants.kBackRightMotorPort, MotorType.kBrushless);
   public CANSparkMax frontRightMotor = new CANSparkMax(Constants.MotorConstants.kFrontRightMotorPort, MotorType.kBrushless);
 
+  private boolean brakeMode = false;
+  public boolean halfSpeed = true;
+  public double halfMultiplier;
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     configMotors();
+    halfMultiplier = 1;
   }
 
   private void configMotors() {
@@ -46,12 +51,17 @@ public class Drivetrain extends SubsystemBase {
     // backRightMotor.setOpenLoopRampRate(1);
     // frontRightMotor.setOpenLoopRampRate(1);
 
-    backLeftMotor.setSmartCurrentLimit(55);
-    frontLeftMotor.setSmartCurrentLimit(55);
-    backRightMotor.setSmartCurrentLimit(55);
-    frontRightMotor.setSmartCurrentLimit(55);
+    backLeftMotor.setSmartCurrentLimit(45);
+    frontLeftMotor.setSmartCurrentLimit(45);
+    backRightMotor.setSmartCurrentLimit(45);
+    frontRightMotor.setSmartCurrentLimit(45);
 
-    // Set front motors to follow back back motors
+    // backLeftMotor.setOpenLoopRampRate(0.75 /*0.4 */);
+    // frontLeftMotor.setOpenLoopRampRate(0.75 /*0.4 */);
+    // backRightMotor.setOpenLoopRampRate(0.75 /*0.4 */);
+    // frontRightMotor.setOpenLoopRampRate(0.75 /*0.4 */); 
+
+    // Set front moto rs to follow back back motors
     backLeftMotor.follow(frontLeftMotor, false);
     backRightMotor.follow(frontRightMotor, false);
 
@@ -66,8 +76,8 @@ public class Drivetrain extends SubsystemBase {
 
   public void driveArcade(double xSpeed, double ySpeed) {
 
-    double leftSpeed = ySpeed * (1) - xSpeed * (1);
-    double rightSpeed = ySpeed * (1) + xSpeed * (1);
+    double leftSpeed = ySpeed * (0.15) - xSpeed * (0.2);
+    double rightSpeed = ySpeed * (0.15) + xSpeed * (0.2);
     SmartDashboard.putNumber("leftSpeed", leftSpeed);
     SmartDashboard.putNumber("rightSpeed", rightSpeed);
     SmartDashboard.putNumber("encoder real", frontLeftMotor.getEncoder().getPosition());
@@ -77,8 +87,8 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void DriveTank(double leftSpeed, double rightSpeed) {
-    frontLeftMotor.set(MathUtil.clamp(leftSpeed, -0.1, 0.1));
-    frontRightMotor.set(MathUtil.clamp(rightSpeed, -0.1, 0.1));
+    frontLeftMotor.set(MathUtil.clamp(leftSpeed, -0.25, 0.25));
+    frontRightMotor.set(MathUtil.clamp(rightSpeed, -0.25, 0.25));
     SmartDashboard.putNumber("leftSpeed", MathUtil.clamp(leftSpeed, -0.1, 0.1));
     SmartDashboard.putNumber("rightSpeed", MathUtil.clamp(rightSpeed, -0.1, 0.1));
     SmartDashboard.putNumber("encoder", getDistance());
@@ -86,6 +96,42 @@ public class Drivetrain extends SubsystemBase {
 
   public double getDistance() {
     return frontLeftMotor.getEncoder().getPosition() * Constants.EncoderConstants.tickToFeet;
+  }
+
+  public CommandBase toggleHalfSpeed() {
+    return runOnce(() -> {
+      if (halfSpeed) {
+        halfMultiplier = 0.4;
+        SmartDashboard.putBoolean("Speed Multiplier", false);
+
+      } else {
+        halfMultiplier = 1;
+        SmartDashboard.putBoolean("Speed Multiplier", true);
+
+      }
+      halfSpeed = !halfSpeed;
+    });
+  }
+
+  public CommandBase toggleBrakeMode() {
+    return runOnce( () -> {
+      System.out.println(brakeMode);
+      if (brakeMode) {
+        backLeftMotor.setIdleMode(IdleMode.kCoast);
+        frontLeftMotor.setIdleMode(IdleMode.kCoast);
+        backRightMotor.setIdleMode(IdleMode.kCoast);
+        frontRightMotor.setIdleMode(IdleMode.kCoast);
+        SmartDashboard.putBoolean("Drive Mode", true);
+      } else {
+        backLeftMotor.setIdleMode(IdleMode.kBrake); 
+        frontLeftMotor.setIdleMode(IdleMode.kBrake);
+        backRightMotor.setIdleMode(IdleMode.kBrake);
+        frontRightMotor.setIdleMode(IdleMode.kBrake);
+        SmartDashboard.putBoolean("Drive Mode", false);
+
+      }
+      brakeMode = !brakeMode;
+    });
   }
 
   public CommandBase setBrakeMode() {

@@ -28,7 +28,7 @@ public class DriveArcade extends CommandBase {
     double ySpeed = MathUtil.applyDeadband(RobotContainer.m_driverController.getLeftY(), Constants.ControllerConstants.kDeadzone);
     double xSpeed = MathUtil.applyDeadband(RobotContainer.m_driverController.getRightX(), Constants.ControllerConstants.kDeadzone);
 
-    RobotContainer.m_Drivetrain.driveArcade(xSpeed, ySpeed);
+    RobotContainer.m_Drivetrain.driveArcade(xSpeed * RobotContainer.m_Drivetrain.halfMultiplier, -ySpeed * RobotContainer.m_Drivetrain.halfMultiplier);
     SmartDashboard.putNumber("Left Joystick Y value", RobotContainer.m_driverController.getLeftY());
     SmartDashboard.putNumber("Right Joystick X value", RobotContainer.m_driverController.getRightX());
     SmartDashboard.putNumber("ySpeed", ySpeed);
